@@ -61,8 +61,8 @@ button, summary { cursor: pointer }
 .menu-toggle { display: none }
 
 .hero { position: relative; isolation: isolate; overflow: hidden; background: var(--night); color: var(--light) }
-.hero-art { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg,#141c18 5%,#141c18ef 28%,#141c1870 62%,#141c181c), linear-gradient(0deg,#141c18e8,transparent 42%), var(--serra-photo) right 21% / max(83%, 860px) auto no-repeat }
-.hero-inner { display: flex; flex-direction: column; min-height: clamp(560px, 78svh, 800px); padding-top: clamp(72px, 12svh, 148px) }
+.hero-art { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg,#141c18cf 0%,#141c18be 28%,#141c1866 62%,#141c181c), linear-gradient(0deg,#141c18e8,transparent 42%), var(--serra-photo) center 40% / cover no-repeat }
+.hero-inner { display: flex; flex-direction: column; min-height: calc(100svh - var(--header-height, 79px)); padding-top: clamp(72px, 12svh, 148px) }
 .hero-message { max-width: min(800px, 100%) }
 .eyebrow { display: flex; align-items: center; gap: 10px; color: var(--bronze); font-size: .7rem; font-weight: 650; letter-spacing: .13em; text-transform: uppercase }
 .eyebrow > span { width: 22px; height: 1px; flex: none; background: currentColor }
@@ -135,7 +135,7 @@ button, summary { cursor: pointer }
   .header-actions { gap: 5px }
   .header-contact svg { display: none }
   .hero-art { background: linear-gradient(90deg,#141c18e8,#141c1866), linear-gradient(0deg,#141c18e8,transparent 55%), var(--serra-photo) 62% center / cover no-repeat }
-  .hero-inner { min-height: clamp(560px, 78svh, 700px); padding-top: clamp(56px, 10svh, 90px) }
+  .hero-inner { padding-top: clamp(56px, 10svh, 90px) }
   .hero h1 { font-size: clamp(2.55rem, 8.3vw, 4.25rem) }
   .privacy-inner { grid-template-columns: 1fr }
   .privacy-copy { margin-top: 22px; padding-top: 0; padding-left: 14px }

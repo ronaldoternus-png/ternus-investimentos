@@ -375,6 +375,34 @@ button, summary { cursor: pointer }
   .method-backdrop svg { position: absolute; bottom: 0; height: auto; width: min(180%, 1080px); right: 0 }
   .method-backdrop::after { background: linear-gradient(0deg, var(--night), transparent 12%, transparent 40%, var(--night) 65%) }
 }
+/* Telas grandes e TV (espelhamento): o site cresce junto com a largura da tela
+   em vez de ficar parado em 1240 px no meio. Até 1440 px nada muda. */
+@media (min-width: 1441px) {
+  :root { --gutter: 5vw }
+  html { font-size: calc(100vw / 90) }
+  body { font-size: 1rem }
+  .wrap { width: calc(100% - var(--gutter) * 2) }
+  .header-inner { min-height: 5.4vw }
+  .header nav { gap: 1.35vw }
+  .monogram { width: 2.45vw; height: 2.45vw }
+  .header-contact, .language-picker summary { min-height: 2.5rem; padding: 0 .65rem }
+  .button { min-height: 3rem; padding: .75rem 1.06rem; gap: 1.1rem }
+  .button svg, .header-contact svg { width: .95rem; height: .95rem }
+  .hero-inner { padding-top: 12svh }
+  .hero-message { max-width: 56vw }
+  .hero-index a { width: 2.75rem; height: 2.75rem }
+  .privacy, .contact { padding-block: 9vw }
+  .privacy-inner { column-gap: 7vw }
+  .enquiry-details { max-width: 38vw }
+  .site-info-inner { padding-block: 8vw }
+  .site-info-inner:has(.site-info-portrait:not([hidden])) { column-gap: 8vw }
+  .site-info-portrait { max-width: 25vw }
+  .chapter-orbit { width: min(100%, 35vw) }
+  #site-info[data-section="1"] .site-info-inner { width: calc(100% - 7vw); column-gap: 3.2vw }
+  #site-info[data-section] .site-info-inner { min-height: 77svh }
+  .site-info-portrait img, .site-info-credential { width: min(84%, 41vw) }
+  .footer-inner { padding-block: 2.1vw }
+}
 </style>
 <link rel="canonical" href="https://www.ternusinvestimentos.com.br/">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":["Organization","RealEstateAgent"],"name":"Ternus Investimentos","url":"https://www.ternusinvestimentos.com.br/","address":{"@type":"PostalAddress","streetAddress":"Av. Coronel João Fernandes, 439, sala 12","addressLocality":"Araranguá","addressRegion":"SC","postalCode":"88900-003","addressCountry":"BR"},"telephone":"+55 48 99600-0549","founder":{"@type":"Person","@id":"https://ronaldoternus.com.br/#ronaldo","name":"Ronaldo Ternus","url":"https://ronaldoternus.com.br/","sameAs":["https://www.linkedin.com/in/ronaldoternus/","https://www.instagram.com/ronaldo.ternus/"]},"parentOrganization":{"@type":"Organization","name":"Ternus Group","url":"https://ternusgroup.com.br/"}}</script>

@@ -347,6 +347,47 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 .to-top:hover{background:var(--gold);color:var(--night)}
 .to-top svg{width:1.1rem;height:1.1rem}
 
+/* encaixe por seção: cada faixa ocupa a tela */
+html{scroll-snap-type:y proximity}
+.hero,.manifest,.chapter,.fullbleed,.world,.about,.contact{scroll-snap-align:start}
+.footer{scroll-snap-align:end}
+.method-snaps{display:none}
+@media (max-width:900px),(max-height:599px){.method{scroll-snap-align:start}}
+@media (min-width:901px) and (min-height:600px){
+ html{scroll-snap-type:y mandatory;scroll-padding-top:0}
+ .manifest,.chapter,.world,.about,.contact{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--hh) + 2.5rem) 0 3rem}
+ .manifest{padding-bottom:0}
+ .manifest>.wrap{margin-block:auto}
+ .manifest .marquee{margin-top:2.5rem}
+ .manifest h2{font-size:clamp(2.5rem,min(6.2vw,10svh),7rem)}
+ .manifest-foot{margin-top:2.5rem}
+ .chapter .ch-media .frame{max-height:calc(100svh - var(--hh) - 7rem)}
+ .display{font-size:clamp(2.6rem,min(5.6vw,9.5svh),6.4rem)}
+ .portrait{max-width:min(30rem,calc((100svh - var(--hh) - 7rem) * .743))}
+ .about h2{font-size:clamp(3rem,min(6.4vw,11svh),7.4rem);margin:1rem 0 1.4rem}
+ .stats{margin:1.8rem 0;padding:1.4rem 0}
+ .world-top{margin-bottom:2rem}
+ .map{aspect-ratio:3/2;height:clamp(16rem,50svh,44rem);width:auto;max-width:100%;margin-inline:auto}
+ .contact h2{font-size:clamp(3rem,min(7.5vw,13svh),8.5rem)}
+ /* método: a tela trava e cada rolada mostra uma etapa */
+ .method{position:relative;height:500svh;padding:0}
+ .method-snaps{display:block;position:absolute;inset:0;pointer-events:none}
+ .method-snaps i{display:block;height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
+ .method-pin{position:sticky;top:0;height:100svh;display:flex;align-items:center;padding:calc(var(--hh) + 1rem) 0 1.5rem;overflow:hidden}
+ .method-grid{align-items:center;width:calc(100% - var(--g)*2)}
+ .method-side{position:static}
+ .method-side h2{font-size:clamp(2.4rem,min(4.4vw,8svh),4.8rem);margin-bottom:1.2rem}
+ .method-side .frame{aspect-ratio:auto;height:30svh;margin-top:1.6rem}
+ .step{padding:1rem 0}
+ .step::before{top:1.55rem}
+ .step h3{margin:0;font-size:clamp(1.4rem,min(2.3vw,4.4svh),2.5rem);transition:color .5s}
+ .step p{max-height:0;opacity:0;overflow:hidden;margin:0;transition:max-height .7s var(--ease),opacity .6s ease,margin .7s var(--ease)}
+ .step.cur p{max-height:9rem;opacity:1;margin-top:.7rem}
+ .step.cur h3{color:var(--gold2)}
+ .js .step{opacity:.4}
+ .js .step.cur{opacity:1}
+}
+
 @media (prefers-reduced-motion:reduce){
  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
  .js [data-r],.js .hero [data-h],.js .hero h1 .w>span,.js [data-split] .w>span{opacity:1;transform:none}
@@ -421,8 +462,8 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 <p data-r="" data-t="pCopy1" style="--d:.12s">Seja um imóvel ou uma empresa, apresento a oportunidade diretamente a compradores selecionados, sem divulgação pública.</p>
 </div>
 </div>
-</section>
 <div aria-hidden="true" class="marquee"><div class="marquee-track"></div></div>
+</section>
 <section aria-labelledby="valores-t" class="chapter" id="valores">
 <div class="wrap ch-grid">
 <div class="ch-text">
@@ -435,6 +476,8 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 </div>
 </section>
 <section aria-labelledby="como-t" class="method" id="como-trabalhamos">
+<div aria-hidden="true" class="method-snaps"><i></i><i></i><i></i><i></i><i></i></div>
+<div class="method-pin">
 <div class="wrap method-grid">
 <div class="method-side">
 <div class="ch-head"><span class="num" data-r="">02</span><p class="eyebrow" data-r="" data-t="m_label" style="--d:.1s">Como trabalhamos</p></div>
@@ -443,6 +486,7 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 <div class="frame mask" data-r="fade"><img alt="" height="1024" loading="lazy" src="metodo.webp" width="1536"/><span aria-hidden="true" class="count">01</span></div>
 </div>
 <ol class="steps"></ol>
+</div>
 </div>
 </section>
 <section aria-labelledby="negocios-t" class="fullbleed" id="negocios-empresariais">
@@ -462,14 +506,13 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 <div class="world-top">
 <div><div class="ch-head"><span class="num" data-r="">04</span><p class="eyebrow" data-r="" data-t="w_label" style="--d:.1s">Conexões internacionais</p></div>
 <h2 class="display" data-split="" data-t="w_title" id="world-t">Conexões para imóveis e empresas</h2></div>
-<p class="lead" data-r="" data-t="w_p1">Em negócios imobiliários, trabalho com corretores e profissionais de mercados locais. Em negociações de empresas, aciono minha rede para identificar compradores, investidores ou parceiros compatíveis, conforme a oportunidade.</p>
+<div><p class="lead" data-r="" data-t="w_p1">Em negócios imobiliários, trabalho com corretores e profissionais de mercados locais. Em negociações de empresas, aciono minha rede para identificar compradores, investidores ou parceiros compatíveis, conforme a oportunidade.</p><p class="lead" data-r="" data-t="w_p2" style="--d:.1s;margin-top:1rem">No Brasil e no exterior, compartilho informações de mercado e faço apresentações quando há alinhamento e autorização das partes.</p></div>
 </div>
 <div aria-hidden="true" class="map" data-r="fade">
 <img alt="" height="1024" loading="lazy" src="mapa.webp" width="1536"/>
 <svg preserveaspectratio="xMidYMid slice" viewbox="0 0 100 66.67"></svg>
 <span class="pin-label" data-t="place">Santa Catarina, Brasil</span>
 </div>
-<div class="world-foot"><span></span><p class="lead" data-r="" data-t="w_p2">No Brasil e no exterior, compartilho informações de mercado e faço apresentações quando há alinhamento e autorização das partes.</p></div>
 </div>
 </section>
 <section aria-labelledby="sobre-t" class="about" id="sobre-mim">
@@ -635,6 +678,7 @@ function countUp(box) {
 const header = $('.header'), bar = $('.progress'), toTop = $('.to-top'), heroMedia = $('.hero-media'), heroIn = $('.hero-in');
 const pars = $$('[data-par]'), mTitle = () => $('#manifest-title'), steps = () => $$('.step'), stepsBox = $('.steps'), count = $('.method .count');
 const track = $('.marquee-track');
+const pinMQ = matchMedia('(min-width: 901px) and (min-height: 600px)');
 let lastY = scrollY, vel = 0, mx = 0, my = 0, tmx = 0, tmy = 0, marqueeX = 0, ticking = false;
 const navLinks = $$('#mainnav a');
 
@@ -673,9 +717,15 @@ function frame() {
   }
   // etapas
   const st = steps(); let on = -1;
-  st.forEach((s, i) => { const r = s.getBoundingClientRect(); if (r.top < vh * .58) on = i; });
-  st.forEach((s, i) => s.classList.toggle('on', i <= on));
-  if (stepsBox) { const r = stepsBox.getBoundingClientRect(); const p = Math.min(1, Math.max(0, (vh * .58 - r.top) / r.height)); stepsBox.style.setProperty('--p', p.toFixed(3)); }
+  if (pinMQ.matches) {
+    const r = $('.method').getBoundingClientRect();
+    on = r.top > vh * .5 ? -1 : Math.max(0, Math.min(st.length - 1, Math.round(-r.top / vh)));
+    stepsBox.style.setProperty('--p', (Math.max(on, 0) / (st.length - 1)).toFixed(3));
+  } else {
+    st.forEach((s, i) => { const r = s.getBoundingClientRect(); if (r.top < vh * .58) on = i; });
+    if (stepsBox) { const r = stepsBox.getBoundingClientRect(); const p = Math.min(1, Math.max(0, (vh * .58 - r.top) / r.height)); stepsBox.style.setProperty('--p', p.toFixed(3)); }
+  }
+  st.forEach((s, i) => { s.classList.toggle('on', i <= on); s.classList.toggle('cur', i === Math.max(on, 0)); });
   if (count) count.textContent = String(Math.max(1, on + 1)).padStart(2, '0');
   // menu ativo
   let cur = null; navLinks.forEach(a => { const s = $(a.getAttribute('href')); if (s && s.getBoundingClientRect().top < vh * .45) cur = a; });

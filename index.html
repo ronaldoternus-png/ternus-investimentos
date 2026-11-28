@@ -256,14 +256,14 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 .fullbleed .ch-text{max-width:40rem}
 @media (max-width:760px){.fullbleed::before{background:linear-gradient(180deg,#121915f2 0%,#121915d9 55%,#12191599 80%,#121915)}}
 
-/* conexões: mapa */
-.world{padding:clamp(6rem,12vw,10rem) 0 clamp(4rem,8vw,7rem);background:var(--night)}
-.world-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2rem clamp(2.5rem,7vw,8rem);align-items:end;margin-bottom:clamp(2.5rem,5vw,4rem)}
-.world-top h2{max-width:14ch}
-.map{position:relative;aspect-ratio:3/2;overflow:hidden}
+/* conexões: mapa ocupando todo o fundo */
+.world{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;isolation:isolate;background:var(--night);padding:clamp(6rem,12vw,10rem) 0}
+.world::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#121915f5 0%,#121915e6 24%,#12191566 46%,#12191500 62%),linear-gradient(0deg,#121915 0%,#12191500 22%,#12191500 80%,#121915 100%)}
+.world-text{max-width:min(34rem,100%)}
+.world-text h2{margin-bottom:1.6rem;max-width:12ch}
+.map{position:absolute;top:0;bottom:0;left:12%;right:-12%;z-index:-2;overflow:hidden}
 .map img{width:100%;height:100%;object-fit:cover}
 .map svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.map::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 55%,var(--night) 100%);pointer-events:none}
 .arc{fill:none;stroke:var(--gold);stroke-width:.16;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;opacity:.9}
 .map.in .arc{animation:arcDraw 2.4s var(--ease) forwards;animation-delay:var(--d)}
 @keyframes arcDraw{to{stroke-dashoffset:0}}
@@ -274,8 +274,7 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 @media (prefers-reduced-motion:no-preference){.pulse{animation:pulse 2.8s var(--ease) infinite}.pulse.b{animation-delay:1.4s}}
 @keyframes pulse{0%{transform:scale(.4);opacity:1}100%{transform:scale(3.2);opacity:0}}
 .pin-label{position:absolute;transform:translate(1.2rem,-50%);font:600 .66rem/1.2 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold2);white-space:nowrap;text-shadow:0 1px 8px #000}
-.world-foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2rem clamp(2.5rem,7vw,8rem);margin-top:clamp(2rem,4vw,3rem)}
-@media (max-width:900px){.world-top,.world-foot{grid-template-columns:minmax(0,1fr)}.map{aspect-ratio:4/3}}
+@media (max-width:900px){.map{left:-20%;right:-20%}.world{align-items:flex-start}.world::before{background:linear-gradient(180deg,#121915f2 0%,#121915e0 45%,#12191540 75%,#121915 100%)}.world{padding-bottom:22rem}}
 
 /* sobre mim */
 .about{position:relative;background:linear-gradient(180deg,var(--night) 0%,#0e1411 100%);padding:clamp(6rem,12vw,11rem) 0;overflow:hidden}
@@ -347,6 +346,26 @@ body::after{content:"";position:fixed;inset:-50%;z-index:90;pointer-events:none;
 .to-top:hover{background:var(--gold);color:var(--night)}
 .to-top svg{width:1.1rem;height:1.1rem}
 
+
+/* imagens em tela cheia no fundo */
+.bg-valores .bg img{object-position:82% 50%}
+.method{position:relative}
+.method-pin{position:relative;isolation:isolate}
+.method-bg{position:absolute;inset:0;z-index:-2;overflow:hidden}
+.method-bg img{width:100%;height:100%;object-fit:cover;object-position:70% 50%;transform:scaleX(-1)}
+.method-pin::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#18211cf2 0%,#18211cc7 38%,#18211c9e 55%,#18211ce0 75%,#18211cf2 100%),linear-gradient(0deg,#18211c 0%,#18211c00 22%,#18211c00 80%,#18211c 100%)}
+.method-side .count{display:block;position:static;margin-top:1.6rem;font:300 clamp(4rem,min(8vw,14svh),9rem)/1 var(--serif);color:var(--gold);text-shadow:none}
+.about{position:relative;isolation:isolate;display:flex;align-items:center;min-height:100svh}
+.about-bg{position:absolute;top:0;bottom:0;right:0;width:58%;z-index:-1;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 38%);mask-image:linear-gradient(90deg,transparent 0%,#000 38%)}
+.about-bg img{width:100%;height:100%;object-fit:cover;object-position:50% 25%}
+.about-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0e1411 0%,#0e141100 30%),linear-gradient(180deg,#121915 0%,#12191500 18%)}
+.about-text{max-width:min(40rem,100%)}
+@media (max-width:900px){
+ .method-bg img{object-position:30% 50%}
+ .method-pin::before{background:#18211cd9}
+ .about{align-items:flex-end;padding-top:62svh}
+ .about-bg{width:100%;bottom:auto;height:75svh;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%)}
+}
 /* encaixe por seção: cada faixa ocupa a tela */
 html{scroll-snap-type:y proximity}
 .hero,.manifest,.chapter,.fullbleed,.world,.about,.contact{scroll-snap-align:start}
@@ -355,19 +374,26 @@ html{scroll-snap-type:y proximity}
 @media (max-width:900px),(max-height:599px){.method{scroll-snap-align:start}}
 @media (min-width:901px) and (min-height:600px){
  html{scroll-snap-type:y mandatory;scroll-padding-top:0}
- .manifest,.chapter,.world,.about,.contact{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--hh) + 2.5rem) 0 3rem}
+ .manifest,.chapter,.world,.about,.contact{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--hh) + 1.8rem) 0 2.2rem}
  .manifest{padding-bottom:0}
+ .hero{height:100svh;min-height:0}
+ .hero-in{padding:calc(var(--hh) + 2svh) 0 1.2rem}
+ .hero h1{font-size:clamp(2.8rem,min(8vw,11.5svh),9.2rem);margin:1.1rem 0 1.2rem}
+ .hero-actions{margin-top:1.6rem}
+ .hero-foot{margin-top:4svh;padding-top:1rem}
+ .fullbleed{min-height:100svh;padding:calc(var(--hh) + 2rem) 0 2.5rem}
+ .lead{font-size:clamp(.92rem,min(1.2vw,2.05svh),1.15rem);line-height:1.65}
+ .ch-text h2{margin-bottom:1.4rem}
+ .ch-head{margin-bottom:1.2rem}
+ .about .stats{margin:1.4rem 0;padding:1.1rem 0}
+ .about h2{font-size:clamp(2.6rem,min(6vw,9svh),7.4rem)}
  .manifest>.wrap{margin-block:auto}
  .manifest .marquee{margin-top:2.5rem}
  .manifest h2{font-size:clamp(2.5rem,min(6.2vw,10svh),7rem)}
  .manifest-foot{margin-top:2.5rem}
- .chapter .ch-media .frame{max-height:calc(100svh - var(--hh) - 7rem)}
  .display{font-size:clamp(2.6rem,min(5.6vw,9.5svh),6.4rem)}
- .portrait{max-width:min(30rem,calc((100svh - var(--hh) - 7rem) * .743))}
  .about h2{font-size:clamp(3rem,min(6.4vw,11svh),7.4rem);margin:1rem 0 1.4rem}
  .stats{margin:1.8rem 0;padding:1.4rem 0}
- .world-top{margin-bottom:2rem}
- .map{aspect-ratio:3/2;height:clamp(16rem,50svh,44rem);width:auto;max-width:100%;margin-inline:auto}
  .contact h2{font-size:clamp(3rem,min(7.5vw,13svh),8.5rem)}
  /* método: a tela trava e cada rolada mostra uma etapa */
  .method{position:relative;height:500svh;padding:0}
@@ -377,7 +403,6 @@ html{scroll-snap-type:y proximity}
  .method-grid{align-items:center;width:calc(100% - var(--g)*2)}
  .method-side{position:static}
  .method-side h2{font-size:clamp(2.4rem,min(4.4vw,8svh),4.8rem);margin-bottom:1.2rem}
- .method-side .frame{aspect-ratio:auto;height:30svh;margin-top:1.6rem}
  .step{padding:1rem 0}
  .step::before{top:1.55rem}
  .step h3{margin:0;font-size:clamp(1.4rem,min(2.3vw,4.4svh),2.5rem);transition:color .5s}
@@ -464,26 +489,27 @@ html{scroll-snap-type:y proximity}
 </div>
 <div aria-hidden="true" class="marquee"><div class="marquee-track"></div></div>
 </section>
-<section aria-labelledby="valores-t" class="chapter" id="valores">
-<div class="wrap ch-grid">
+<section aria-labelledby="valores-t" class="fullbleed bg-valores" id="valores">
+<div aria-hidden="true" class="bg" data-par=".14"><img alt="" height="1024" loading="lazy" src="valores.webp" width="1536"/></div>
+<div class="wrap">
 <div class="ch-text">
 <div class="ch-head"><span class="num" data-r="">01</span><p class="eyebrow" data-r="" data-t="v_label" style="--d:.1s">O que acreditamos</p></div>
 <h2 class="display" data-split="" data-t="v_title" id="valores-t">Confiança, discrição e respeito ao seu tempo</h2>
 <p class="lead" data-r="" data-t="v_p1">Comprar ou vender um imóvel ou uma empresa envolve patrimônio, planos e informações sensíveis. Em cada negociação, você decide o que pode ser compartilhado, com quem e quando.</p>
 <p class="lead" data-r="" data-t="v_p2" style="--d:.1s">Para mim, exclusividade significa dedicar tempo ao seu caso e apresentar a oportunidade às pessoas certas.</p>
 </div>
-<figure class="ch-media"><div class="frame mask" data-r="fade"><img alt="" height="1024" loading="lazy" src="valores.webp" width="1536"/></div><span aria-hidden="true" class="corner"></span></figure>
 </div>
 </section>
 <section aria-labelledby="como-t" class="method" id="como-trabalhamos">
 <div aria-hidden="true" class="method-snaps"><i></i><i></i><i></i><i></i><i></i></div>
 <div class="method-pin">
+<div aria-hidden="true" class="method-bg"><img alt="" height="1024" loading="lazy" src="metodo.webp" width="1536"/></div>
 <div class="wrap method-grid">
 <div class="method-side">
 <div class="ch-head"><span class="num" data-r="">02</span><p class="eyebrow" data-r="" data-t="m_label" style="--d:.1s">Como trabalhamos</p></div>
 <h2 class="display" data-split="" data-t="m_title" id="como-t">Da primeira conversa à negociação</h2>
 <p class="lead" data-r="" data-t="m_p2">Seja um imóvel ou uma empresa, apresento a oportunidade diretamente a compradores selecionados, sem divulgação pública. Conduzo pessoalmente cada negociação.</p>
-<div class="frame mask" data-r="fade"><img alt="" height="1024" loading="lazy" src="metodo.webp" width="1536"/><span aria-hidden="true" class="count">01</span></div>
+<span aria-hidden="true" class="count">01</span>
 </div>
 <ol class="steps"></ol>
 </div>
@@ -502,23 +528,24 @@ html{scroll-snap-type:y proximity}
 </div>
 </section>
 <section aria-labelledby="world-t" class="world" id="conexoes-internacionais">
-<div class="wrap">
-<div class="world-top">
-<div><div class="ch-head"><span class="num" data-r="">04</span><p class="eyebrow" data-r="" data-t="w_label" style="--d:.1s">Conexões internacionais</p></div>
-<h2 class="display" data-split="" data-t="w_title" id="world-t">Conexões para imóveis e empresas</h2></div>
-<div><p class="lead" data-r="" data-t="w_p1">Em negócios imobiliários, trabalho com corretores e profissionais de mercados locais. Em negociações de empresas, aciono minha rede para identificar compradores, investidores ou parceiros compatíveis, conforme a oportunidade.</p><p class="lead" data-r="" data-t="w_p2" style="--d:.1s;margin-top:1rem">No Brasil e no exterior, compartilho informações de mercado e faço apresentações quando há alinhamento e autorização das partes.</p></div>
-</div>
 <div aria-hidden="true" class="map" data-r="fade">
 <img alt="" height="1024" loading="lazy" src="mapa.webp" width="1536"/>
 <svg preserveaspectratio="xMidYMid slice" viewbox="0 0 100 66.67"></svg>
 <span class="pin-label" data-t="place">Santa Catarina, Brasil</span>
 </div>
+<div class="wrap">
+<div class="world-text">
+<div class="ch-head"><span class="num" data-r="">04</span><p class="eyebrow" data-r="" data-t="w_label" style="--d:.1s">Conexões internacionais</p></div>
+<h2 class="display" data-split="" data-t="w_title" id="world-t">Conexões para imóveis e empresas</h2>
+<p class="lead" data-r="" data-t="w_p1">Em negócios imobiliários, trabalho com corretores e profissionais de mercados locais. Em negociações de empresas, aciono minha rede para identificar compradores, investidores ou parceiros compatíveis, conforme a oportunidade.</p>
+<p class="lead" data-r="" data-t="w_p2" style="--d:.1s;margin-top:1rem">No Brasil e no exterior, compartilho informações de mercado e faço apresentações quando há alinhamento e autorização das partes.</p>
+</div>
 </div>
 </section>
 <section aria-labelledby="sobre-t" class="about" id="sobre-mim">
-<div class="wrap about-grid">
-<figure class="portrait"><div class="frame mask" data-r="fade"><img alt="Ronaldo Ternus" height="1020" loading="lazy" src="retrato.webp" width="758"/></div><span aria-hidden="true" class="outline" data-par="-.06"></span><figcaption class="creci">CRECI-SC 60435</figcaption></figure>
-<div>
+<div aria-hidden="true" class="about-bg"><img alt="" height="1020" loading="lazy" src="retrato.webp" width="758"/></div>
+<div class="wrap">
+<div class="about-text">
 <div class="ch-head"><span class="num" data-r="">05</span><p class="eyebrow" data-r="" data-t="s_label" style="--d:.1s">Sobre mim</p></div>
 <h2 data-split="" data-t="s_title" id="sobre-t">Ronaldo Ternus</h2>
 <p class="lead" data-r="" data-t="s_p1">Sou empresário e empreendedor. Há mais de 20 anos atuo no mercado, com experiência em vendas, negociação e negócios imobiliários e empresariais. À frente da Ternus Investimentos, uso o que aprendi para entender o que está em jogo para cada parte e aproximar as pessoas certas dos negócios certos.</p>
@@ -640,7 +667,7 @@ function apply(code) {
 }
 
 /* ---------- revelações ---------- */
-const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); if (e.target.matches('.stats')) countUp(e.target); } }), { rootMargin: '0px 0px -12% 0px', threshold: .08 });
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); if (e.target.matches('.stats')) countUp(e.target); } }), { rootMargin: '0px 0px -2% 0px', threshold: .01 });
 function observeAll() {
   $$('[data-r],[data-split],.map,.stats').forEach(el => { if (!el.classList.contains('in')) io.observe(el); else if (el.matches('[data-split]')) el.classList.add('in'); });
 }

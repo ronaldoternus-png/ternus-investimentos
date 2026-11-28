@@ -373,7 +373,7 @@ html{scroll-snap-type:y proximity}
 .method-snaps{display:none}
 @media (max-width:900px),(max-height:599px){.method{scroll-snap-align:start}}
 @media (min-width:901px) and (min-height:600px){
- html{scroll-snap-type:y mandatory;scroll-padding-top:0}
+ html{scroll-snap-type:none;scroll-padding-top:0}
  .manifest,.chapter,.world,.about,.contact{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--hh) + 1.8rem) 0 2.2rem}
  .manifest{padding-bottom:0}
  .hero{height:100svh;min-height:0}
@@ -804,37 +804,44 @@ fsBtn.addEventListener('click', toggleFs);
 document.addEventListener('fullscreenchange', paintFs); document.addEventListener('webkitfullscreenchange', paintFs);
 document.addEventListener('keydown', e => { if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.closest('input,textarea,select,[contenteditable]')) toggleFs(); });
 
-/* ---------- roda do mouse: uma rolada = uma seção (computador e TV) ---------- */
-(function wheelPaging() {
-  let lock = 0, acc = 0, accT = 0;
+/* ---------- rolagem fluida (computador e TV) com encaixe suave ao parar ---------- */
+(function smoothScroll() {
+  if (reduce) return;
+  let target = scrollY, current = scrollY, running = false, ours = false, idle = 0;
+  const maxY = () => document.documentElement.scrollHeight - innerHeight;
   const points = () => {
     const ys = [...document.querySelectorAll('.hero,.manifest,.fullbleed,.world,.about,.contact,.method-snaps i')].map(el => Math.round(el.getBoundingClientRect().top + scrollY));
-    ys.push(document.documentElement.scrollHeight - innerHeight);
-    return [...new Set(ys)].sort((a, b) => a - b);
+    ys.push(maxY()); return [...new Set(ys)];
   };
+  let dir = 1;
+  const settle = () => {
+    const vh = innerHeight, P = points().sort((a, b) => a - b);
+    const ahead = dir > 0 ? P.find(p => p >= target - 2) : [...P].reverse().find(p => p <= target + 2);
+    let best = null; P.forEach(p => { if (best == null || Math.abs(p - target) < Math.abs(best - target)) best = p; });
+    const goal = ahead != null && Math.abs(ahead - target) < vh * 1.02 ? ahead : (best != null && Math.abs(best - target) < vh * .4 ? best : null);
+    if (goal != null) { target = goal; run(); }
+  };
+  const step = () => {
+    const d = target - current;
+    current += d * .085;
+    if (Math.abs(d) < .5) { current = target; running = false; }
+    ours = true; scrollTo(0, current);
+    if (running) requestAnimationFrame(step);
+  };
+  const run = () => { if (!running) { running = true; requestAnimationFrame(step); } };
+  addEventListener('scroll', () => { if (ours) { ours = false; return; } if (!running) { target = current = scrollY; } }, { passive: true });
   addEventListener('wheel', e => {
     if (!pinMQ.matches || e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
     if ($('#overlay').classList.contains('open') || e.target.closest('textarea,select,.lang ul')) return;
     e.preventDefault();
-    const now = performance.now();
-    if (now < lock) { lock = Math.max(lock, now + 180); return; }
-    if (now - accT > 250) acc = 0;
-    accT = now; acc += e.deltaMode === 1 ? e.deltaY * 33 : e.deltaY;
-    if (Math.abs(acc) < 25) return;
-    const dir = Math.sign(acc), y = scrollY, vh = innerHeight, P = points();
-    let target;
-    if (dir > 0) {
-      const next = P.find(p => p > y + 4);
-      if (next == null) return;
-      target = next - y > vh * 1.1 ? y + vh * .85 : next;
-    } else {
-      const prev = [...P].reverse().find(p => p < y - 4);
-      if (prev == null) return;
-      target = y - prev > vh * 1.1 ? y - vh * .85 : prev;
-    }
-    acc = 0; lock = now + (reduce ? 350 : 900);
-    scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' });
+    if (!running) target = current = scrollY;
+    const d = e.deltaMode === 1 ? e.deltaY * 40 : e.deltaMode === 2 ? e.deltaY * innerHeight : e.deltaY;
+    dir = Math.sign(d) || dir;
+    target = Math.max(0, Math.min(maxY(), target + d * 1.15));
+    run();
+    clearTimeout(idle); idle = setTimeout(settle, 180);
   }, { passive: false });
+  addEventListener('resize', () => { target = current = scrollY; });
 })();
 
 /* ---------- formulário ---------- */

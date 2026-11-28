@@ -804,6 +804,39 @@ fsBtn.addEventListener('click', toggleFs);
 document.addEventListener('fullscreenchange', paintFs); document.addEventListener('webkitfullscreenchange', paintFs);
 document.addEventListener('keydown', e => { if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.closest('input,textarea,select,[contenteditable]')) toggleFs(); });
 
+/* ---------- roda do mouse: uma rolada = uma seção (computador e TV) ---------- */
+(function wheelPaging() {
+  let lock = 0, acc = 0, accT = 0;
+  const points = () => {
+    const ys = [...document.querySelectorAll('.hero,.manifest,.fullbleed,.world,.about,.contact,.method-snaps i')].map(el => Math.round(el.getBoundingClientRect().top + scrollY));
+    ys.push(document.documentElement.scrollHeight - innerHeight);
+    return [...new Set(ys)].sort((a, b) => a - b);
+  };
+  addEventListener('wheel', e => {
+    if (!pinMQ.matches || e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    if ($('#overlay').classList.contains('open') || e.target.closest('textarea,select,.lang ul')) return;
+    e.preventDefault();
+    const now = performance.now();
+    if (now < lock) { lock = Math.max(lock, now + 180); return; }
+    if (now - accT > 250) acc = 0;
+    accT = now; acc += e.deltaMode === 1 ? e.deltaY * 33 : e.deltaY;
+    if (Math.abs(acc) < 25) return;
+    const dir = Math.sign(acc), y = scrollY, vh = innerHeight, P = points();
+    let target;
+    if (dir > 0) {
+      const next = P.find(p => p > y + 4);
+      if (next == null) return;
+      target = next - y > vh * 1.1 ? y + vh * .85 : next;
+    } else {
+      const prev = [...P].reverse().find(p => p < y - 4);
+      if (prev == null) return;
+      target = y - prev > vh * 1.1 ? y - vh * .85 : prev;
+    }
+    acc = 0; lock = now + (reduce ? 350 : 900);
+    scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' });
+  }, { passive: false });
+})();
+
 /* ---------- formulário ---------- */
 $('.form').addEventListener('submit', e => {
   e.preventDefault(); const f = new FormData(e.currentTarget);
